@@ -16,7 +16,7 @@ export default function App() {
         .get('http://localhost:5000/api/movies') // Study this endpoint with Postman
         .then(response => {
           // Study this response with a breakpoint or log statements
-          console.log(response.data);
+          console.log(response);
           // and set the response data as the 'movieList' slice of state
           setMovieList(response.data);
         })
@@ -28,15 +28,16 @@ export default function App() {
   }, []);
 
   const addToSavedList = id => {
-    // This is stretch. Prevent the same movie from being "saved" more than once
+    if (!saved.includes(id)) setSaved([...saved, id]);
+    console.log(saved);
   };
 
   return (
     <div>
-      <SavedList list={[ /* This is stretch */]} />
+      <SavedList list={saved} />
 
       <Route path="/movies/:movieId">
-        <Movie />
+        <Movie addToSavedList={addToSavedList} />
       </Route>
       <Route exact path="/">
         <MovieList movies={movieList} />
